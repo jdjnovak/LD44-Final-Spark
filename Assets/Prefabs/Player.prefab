@@ -231,6 +231,8 @@ MonoBehaviour:
   currentHealth: 0
   frameLength: 0
   currentState: 0
+  minLightRange: 1.5
+  maxLightRange: 3
   upKey: 119
   downKey: 115
   leftKey: 97

@@ -12,6 +12,8 @@ public class Player : MonoBehaviour {
     public int currentHealth;
     public float frameLength;
     public PlayerStates.States currentState;
+    public float minLightRange;
+    public float maxLightRange;
 
     // Input Keys
     public KeyCode upKey;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour {
     // GameObject Components
     private SpriteRenderer sr;
     private Rigidbody2D rb;
+    private Light lt;
 
     // Other Objects
     private Sprite[] player_sprites;
@@ -41,11 +44,13 @@ public class Player : MonoBehaviour {
         MovementUpdate();
         StateUpdate();
         SpriteUpdate();
+        LightRangeUpdate();
     }
 
     void Init() {
         sr = gameObject.GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        lt = gameObject.GetComponentInChildren<Light>();
         player_sprites = Resources.LoadAll<Sprite>("spark");
         currentSpriteAnimation = 0;
         currentSpriteFrame = 0;
@@ -99,6 +104,11 @@ public class Player : MonoBehaviour {
         SpriteFrameUpdate();
     }
 
+    void LightRangeUpdate() {
+        lt.range = minLightRange + (((float)currentHealth / (float)maxHealth) * (maxLightRange - minLightRange));
+    }
+
+    // *************** Public functions ***************//
     public void TakeDamage(int damage) {
         currentHealth -= damage;
     }
@@ -121,6 +131,10 @@ public class Player : MonoBehaviour {
 
     public void SetHealthToMax() {
         currentHealth = maxHealth;
+    }
+
+    public void SetPlayerLightRange(float amount) {
+        lt.range = amount;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
