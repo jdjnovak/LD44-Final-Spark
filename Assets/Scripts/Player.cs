@@ -41,7 +41,6 @@ public class Player : MonoBehaviour {
         MovementUpdate();
         StateUpdate();
         SpriteUpdate();
-        //Debug.Log(currentSpriteFrame + " " + currentSpriteAnimation);
     }
 
     void Init() {
@@ -98,5 +97,21 @@ public class Player : MonoBehaviour {
     void SpriteUpdate() {
         SpriteAnimationUpdate();
         SpriteFrameUpdate();
+    }
+
+    public void TakeDamage(int damage) {
+        currentHealth -= damage;
+    }
+
+    public bool IsDead() {
+        return currentHealth <= 0;
+    }
+
+    public int GetCurrentHealth() {
+        return currentHealth;
+    }
+
+    public int GetMaxHealth() {
+        return maxHealth;
     }
 }
