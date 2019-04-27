@@ -114,4 +114,21 @@ public class Player : MonoBehaviour {
     public int GetMaxHealth() {
         return maxHealth;
     }
+
+    public void Heal(int amount) {
+        currentHealth += amount;
+    }
+
+    public void SetHealthToMax() {
+        currentHealth = maxHealth;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Pickup")) {
+            Heal(20);
+            if (currentHealth > maxHealth) {
+                SetHealthToMax();
+            }
+        }
+    }
 }
