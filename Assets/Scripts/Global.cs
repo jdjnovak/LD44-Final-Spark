@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class Global : MonoBehaviour
 {
+    private static GameObject player;
+
     [SerializeField]
     private int score;
     [SerializeField]
     private int lossPerSecond;
 
-    private GameObject player;
     private float lastTookDamage;
     private Text scoreText;
     private Text healthText;
@@ -112,5 +113,9 @@ public class Global : MonoBehaviour
         } else if (healthPerc >= 0.1f) {
             healthImage.sprite = health_sprites[9];
         }
+    }
+
+    public static GameObject GetPlayer() {
+        return player;
     }
 }
