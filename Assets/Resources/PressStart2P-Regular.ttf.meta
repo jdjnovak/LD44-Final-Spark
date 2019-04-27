@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a8d849848de38d544a5a5e9076aa4103
+guid: 6c838a833d5b4a04b96e95bda5a41697
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Source Serif Pro Semibold
+  fontName: Press Start 2P
   fontNames:
-  - Source Serif Pro Semibold
+  - Press Start 2P
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
