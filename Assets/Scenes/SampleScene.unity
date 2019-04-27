@@ -238,10 +238,16 @@ MonoBehaviour:
   maxVelocity: 10
   currentVelocity: 0
   moveBuffer: 0.1
+  maxHealth: 0
+  currentHealth: 0
+  frameLength: 0
+  currentState: 0
   upKey: 119
   downKey: 115
   leftKey: 97
   rightKey: 100
+  currentSpriteFrame: 0
+  currentSpriteAnimation: 0
 --- !u!212 &1266633849
 SpriteRenderer:
   m_ObjectHideFlags: 0
