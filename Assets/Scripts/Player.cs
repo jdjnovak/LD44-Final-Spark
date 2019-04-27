@@ -108,6 +108,11 @@ public class Player : MonoBehaviour {
         lt.range = minLightRange + (((float)currentHealth / (float)maxHealth) * (maxLightRange - minLightRange));
     }
 
+    bool IsInMapBounds() {
+        return (transform.position.x >= -7.5f && transform.position.x <= 7.5f &&
+                transform.position.y >= -7.5f && transform.position.y <= 7.5f);
+    }
+
     // *************** Public functions ***************//
     public void TakeDamage(int damage) {
         currentHealth -= damage;
