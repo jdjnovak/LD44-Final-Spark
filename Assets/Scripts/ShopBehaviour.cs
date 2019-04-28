@@ -31,7 +31,7 @@ public class ShopBehaviour : MonoBehaviour
         GetPlayerCurrentHealth();
         GetPlayerCurrentAbilities();
         SetEnergyText();
-        UpdateCostTexts();
+        UpdateCostTextsAndIcons();
     }
 
     void Init() {
@@ -99,7 +99,7 @@ public class ShopBehaviour : MonoBehaviour
             GameObject.Find("MaxSpeedUpButton").GetComponent<Image>().sprite = shop_sprites[3];
             clickable[1] = true;
         } else {
-            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[5];
+            GameObject.Find("MaxSpeedUpButton").GetComponent<Image>().sprite = shop_sprites[5];
             clickable[1] = false;
         }
 
@@ -107,7 +107,7 @@ public class ShopBehaviour : MonoBehaviour
             GameObject.Find("ResistanceUpButton").GetComponent<Image>().sprite = shop_sprites[6];
             clickable[2] = true;
         } else {
-            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[8];
+            GameObject.Find("ResistanceUpButton").GetComponent<Image>().sprite = shop_sprites[8];
             clickable[2] = false;
         }
         
@@ -115,7 +115,7 @@ public class ShopBehaviour : MonoBehaviour
             GameObject.Find("EPSDownButton").GetComponent<Image>().sprite = shop_sprites[9];
             clickable[3] = true;
         } else {
-            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[11];
+            GameObject.Find("EPSDownButton").GetComponent<Image>().sprite = shop_sprites[11];
             clickable[3] = false;
         }
     }
@@ -131,7 +131,7 @@ public class ShopBehaviour : MonoBehaviour
         text.text = EPSDownCost.ToString() + " Energy";
     }
 
-    void UpdateCostTexts() { 
+    public void UpdateCostTextsAndIcons() { 
         SetCosts();
         SetCostText();
         SetIcons();
