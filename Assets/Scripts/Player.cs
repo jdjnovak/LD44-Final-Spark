@@ -55,7 +55,7 @@ public class Player : MonoBehaviour {
         rb = gameObject.GetComponent<Rigidbody2D>();
         lt = gameObject.GetComponentInChildren<Light>();
         abilities = new int[4] { 0,0,0,0 };
-        player_sprites = Resources.LoadAll<Sprite>("spark");
+        player_sprites = Resources.LoadAll<Sprite>("spark_v2_w_fx");
         currentSpriteAnimation = 0;
         currentSpriteFrame = 0;
         maxHealth = currentHealth = 100;

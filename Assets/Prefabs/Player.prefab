@@ -200,7 +200,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -3149389169688070996, guid: 91fc288b1e1a7e745918f4495ad55421,
+  m_Sprite: {fileID: 1824595980285929383, guid: 5bfc142c58c86e4459a77a8ef5d1375d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -238,5 +238,6 @@ MonoBehaviour:
   leftKey: 97
   rightKey: 100
   interactKey: 32
+  abilities: 
   currentSpriteFrame: 0
   currentSpriteAnimation: 0
