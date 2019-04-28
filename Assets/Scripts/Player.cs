@@ -48,13 +48,14 @@ public class Player : MonoBehaviour {
         StateUpdate();
         SpriteUpdate();
         LightRangeUpdate();
+        UpdateStatsFromAbilities();
     }
 
     void Init() {
         sr = gameObject.GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         lt = gameObject.GetComponentInChildren<Light>();
-        abilities = new int[4] { 0,0,0,0 };
+        abilities = new int[4] { 1,1,1,1 };
         player_sprites = Resources.LoadAll<Sprite>("spark_v2_w_fx");
         currentSpriteAnimation = 0;
         currentSpriteFrame = 0;
@@ -117,6 +118,12 @@ public class Player : MonoBehaviour {
                 transform.position.y >= -7.5f && transform.position.y <= 7.5f);
     }
 
+    // *************** Ability Upgrade Functions **************** //
+    void UpdateStatsFromAbilities() {
+        maxHealth = 100 + ((abilities[0] - 1) * 50);
+        maxVelocity = 3 + (abilities[1] - 1);
+    }
+
     // *************** Public functions ***************//
     public void TakeDamage(int damage) {
         currentHealth -= damage;
@@ -150,6 +157,9 @@ public class Player : MonoBehaviour {
         return abilities;
     }
 
+    public void IncrementPlayerAbilityLevel(int abl) {
+        abilities[abl]++;
+    }
 
     // ******************** Collision Functions ************************//
     private void OnCollisionEnter2D(Collision2D collision) {

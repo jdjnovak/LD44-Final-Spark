@@ -13,21 +13,42 @@ public class ShopBehaviour : MonoBehaviour
     private Sprite[] shop_sprites;
 
     // Prices
-    private int HealthUpCost;
-    private int SpeedUpCost;
-    private int ResistanceUpCost;
-    private int EPSDownCost;
+    public int HealthUpCost;
+    public int SpeedUpCost;
+    public int ResistanceUpCost;
+    public int EPSDownCost;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Started shop!");
+        Init();
     }
 
     // Update is called once per frame
     void Update()
     {
+        GetPlayer();
         GetPlayerCurrentHealth();
+        GetPlayerCurrentAbilities();
+        SetEnergyText();
+        UpdateCostTexts();
+    }
+
+    void Init() {
+        shop_sprites = Resources.LoadAll<Sprite>("button_sprites");
+        GetPlayer();
+        currentPlayerAbilityLevels = new int[4] { 1,1,1,1 };
+        clickable = new bool[4] { false,false,false,false };
+        GetPlayerCurrentAbilities();
+        GetPlayerCurrentHealth();
+        SetUpShopUI();
+    }
+
+
+    // ****************** Player Info Functions ************************//
+
+    void GetPlayer() {
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void GetPlayerCurrentHealth() {
@@ -41,57 +62,61 @@ public class ShopBehaviour : MonoBehaviour
         currentPlayerAbilityLevels[3] = player.GetComponent<Player>().GetPlayerAbilities()[3];
     }
 
+    // ****************** Shop Functions ***************************//
+
     void SetCosts() {
-        if (currentPlayerAbilityLevels[0] != 0) {
-            HealthUpCost = 2 ^ (currentPlayerAbilityLevels[0] - 1) * 10;
-        } else if (currentPlayerAbilityLevels[0] == 8) {
+        if (currentPlayerAbilityLevels[0] < 8) {
+            HealthUpCost = (int)(Mathf.Pow(2f, player.GetComponent<Player>().GetPlayerAbilities()[0] - 1) * 10);
+        } else {
             HealthUpCost = -1;
-        } else {
-            HealthUpCost = 10;
         }
 
-        if (currentPlayerAbilityLevels[1] != 0) {
+        if (currentPlayerAbilityLevels[1] < 10) {
             SpeedUpCost = currentPlayerAbilityLevels[1] * 5;
-        } else if (currentPlayerAbilityLevels[1] == 10) {
+        } else {
             SpeedUpCost = -1;
-        } else {
-            SpeedUpCost = 5;
         }
 
-        if (currentPlayerAbilityLevels[2] != 0) {
-            ResistanceUpCost = 2 ^ (currentPlayerAbilityLevels[2] - 1) * 10;
-        } else if (currentPlayerAbilityLevels[2] == 8) {
+        if (currentPlayerAbilityLevels[2] < 8) {
+            ResistanceUpCost = (int)(Mathf.Pow(2f, currentPlayerAbilityLevels[2] - 1) * 10);
+        } else {
             ResistanceUpCost = -1;
-        } else {
-            ResistanceUpCost = 10;
         }
 
-        if (currentPlayerAbilityLevels[3] != 0) {
-            EPSDownCost = currentPlayerAbilityLevels[3] * 50;
-        } else {
-            EPSDownCost = 50;
-        }
+        EPSDownCost = currentPlayerAbilityLevels[3] * 50;
     }
 
     void SetIcons() {
         if (currentPlayerHealth > HealthUpCost) {
             GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[0];
             clickable[0] = true;
+        } else {
+            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[2];
+            clickable[0] = false;
         }
         
         if (currentPlayerHealth > SpeedUpCost) {
             GameObject.Find("MaxSpeedUpButton").GetComponent<Image>().sprite = shop_sprites[3];
             clickable[1] = true;
+        } else {
+            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[5];
+            clickable[1] = false;
         }
 
         if (currentPlayerHealth > ResistanceUpCost) {
             GameObject.Find("ResistanceUpButton").GetComponent<Image>().sprite = shop_sprites[6];
             clickable[2] = true;
+        } else {
+            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[8];
+            clickable[2] = false;
         }
         
         if (currentPlayerHealth > EPSDownCost) {
             GameObject.Find("EPSDownButton").GetComponent<Image>().sprite = shop_sprites[9];
             clickable[3] = true;
+        } else {
+            GameObject.Find("MaxHealthUpButton").GetComponent<Image>().sprite = shop_sprites[11];
+            clickable[3] = false;
         }
     }
 
@@ -106,25 +131,27 @@ public class ShopBehaviour : MonoBehaviour
         text.text = EPSDownCost.ToString() + " Energy";
     }
 
+    void UpdateCostTexts() { 
+        SetCosts();
+        SetCostText();
+        SetIcons();
+    }
+
     void SetEnergyText() {
         GameObject.FindGameObjectWithTag("UI_Shop_Energy_Text").GetComponent<Text>().text = currentPlayerHealth.ToString();
     }
 
-    void Init() {
-        player = GameObject.FindGameObjectWithTag("Player");
-        shop_sprites = Resources.LoadAll<Sprite>("button_sprites");
-        currentPlayerAbilityLevels = new int[4] { 0,0,0,0 };
-        clickable = new bool[4] { false,false,false,false };
-        GetPlayerCurrentAbilities();
-        GetPlayerCurrentHealth();
+    void SetUpShopUI() {
         SetEnergyText();
         SetCosts();
         SetCostText();
         SetIcons();
     }
 
+    // ************** Utility functions ***************//
+
     private void OnEnable() {
-        Init();
+        Debug.Log("Enabled");
     }
 
     public void DisableCanvas() {

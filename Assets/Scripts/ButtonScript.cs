@@ -17,20 +17,36 @@ public class ButtonScript : MonoBehaviour
         
     }
 
-    // TODO: Make buttons swap sprites on mouse enter
-    private void OnMouseEnter() {
-        switch (gameObject.name) {
-            case "MaxHealthUpButton":
-                break;
-            case "MaxSpeedUpButton":
-                break;
-            case "ResistanceUpButton":
-                break;
-            case "EPSDownButton":
-                break;
+    public void AddLevelHealthUp() {
+        if (ShopBehaviour.clickable[0]) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Player>().IncrementPlayerAbilityLevel(0);
+            player.GetComponent<Player>().TakeDamage(GameObject.FindGameObjectWithTag("UI_Shop_Canvas").GetComponent<ShopBehaviour>().HealthUpCost);
         }
     }
 
-    private void OnMouseExit() {
+    public void AddLevelSpeedUp() {
+        if (ShopBehaviour.clickable[1]) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Player>().IncrementPlayerAbilityLevel(1);
+            player.GetComponent<Player>().TakeDamage(GameObject.FindGameObjectWithTag("UI_Shop_Canvas").GetComponent<ShopBehaviour>().SpeedUpCost);
+        }
+    }
+
+    public void AddLevelResistanceUp() {
+        if (ShopBehaviour.clickable[2]) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Player>().IncrementPlayerAbilityLevel(2);
+            player.GetComponent<Player>().TakeDamage(GameObject.FindGameObjectWithTag("UI_Shop_Canvas").GetComponent<ShopBehaviour>().ResistanceUpCost);
+        }
+    }
+
+    public void AddLevelDrainDown() {
+        if (ShopBehaviour.clickable[3] && Global.GetEPS() > 0) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Player>().IncrementPlayerAbilityLevel(3);
+            player.GetComponent<Player>().TakeDamage(GameObject.FindGameObjectWithTag("UI_Shop_Canvas").GetComponent<ShopBehaviour>().EPSDownCost);
+            Global.DecreaseEPS();
+        }
     }
 }

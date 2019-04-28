@@ -9,6 +9,7 @@ TagManager:
   - Environment
   - UI_Shop
   - UI_Shop_Energy_Text
+  - UI_Shop_Canvas
   layers:
   - Default
   - TransparentFX

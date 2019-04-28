@@ -10,7 +10,7 @@ public class Global : MonoBehaviour
     [SerializeField]
     private int score;
     [SerializeField]
-    private int energyPerSecond;
+    private static int energyPerSecond;
 
     private bool incrementedEPS;
     private float lastIncrementedEPS;
@@ -27,9 +27,9 @@ public class Global : MonoBehaviour
         Init();
     }
 
-    // Yes, yes, I should have put all the UI stuff into a UI manager class...
     void Update()
     {
+        MakeSurePlayerIsNotNull();
         ScoreUpdate();
         EPSUpdate();
         DamageUpdate();
@@ -51,6 +51,12 @@ public class Global : MonoBehaviour
         healthText = GameObject.Find("HealthText").GetComponent<Text>();
         healthImage = GameObject.Find("HealthImage").GetComponent<Image>();
         health_sprites = Resources.LoadAll<Sprite>("health");
+    }
+
+    void MakeSurePlayerIsNotNull() {
+        if (!player) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
     void EPSUpdate() {
@@ -107,25 +113,36 @@ public class Global : MonoBehaviour
         float healthPerc = (float)player.GetComponent<Player>().GetCurrentHealth() / (float)player.GetComponent<Player>().GetMaxHealth();
         if (healthPerc >= 0.91f) {
             healthImage.sprite = health_sprites[0];
-        } else if (healthPerc >= 0.81f) {
-            healthImage.sprite = health_sprites[1];
-        } else if (healthPerc >= 0.71f) {
-            healthImage.sprite = health_sprites[2];
-        } else if (healthPerc >= 0.61f) {
-            healthImage.sprite = health_sprites[3];
-        } else if (healthPerc >= 0.51f) {
-            healthImage.sprite = health_sprites[4];
-        } else if (healthPerc >= 0.41f) {
-            healthImage.sprite = health_sprites[5];
-        } else if (healthPerc >= 0.31f) {
-            healthImage.sprite = health_sprites[6];
-        } else if (healthPerc >= 0.21f) {
-            healthImage.sprite = health_sprites[7];
-        } else if (healthPerc >= 0.11f) {
-            healthImage.sprite = health_sprites[8];
-        } else if (healthPerc >= 0.1f) {
+        } else if (healthPerc <= 0f) {
+            healthImage.sprite = health_sprites[10];
+        } else if (healthPerc < 0.11f) {
             healthImage.sprite = health_sprites[9];
+        } else if (healthPerc < 0.21f) {
+            healthImage.sprite = health_sprites[8];
+        } else if (healthPerc < 0.31f) {
+            healthImage.sprite = health_sprites[7];
+        } else if (healthPerc < 0.41f) {
+            healthImage.sprite = health_sprites[6];
+        } else if (healthPerc < 0.51f) {
+            healthImage.sprite = health_sprites[5];
+        } else if (healthPerc < 0.61f) {
+            healthImage.sprite = health_sprites[4];
+        } else if (healthPerc < 0.71f) {
+            healthImage.sprite = health_sprites[3];
+        } else if (healthPerc < 0.81f) {
+            healthImage.sprite = health_sprites[2];
+        } else if (healthPerc < 0.91f) {
+            healthImage.sprite = health_sprites[1];
         }
+    }
+
+    public static int GetEPS() {
+        return energyPerSecond;
+    }
+
+    public static void DecreaseEPS() {
+        // Used when the option is bought from the store
+        energyPerSecond--;
     }
 
     public static GameObject GetPlayer() {
