@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Global : MonoBehaviour
 {
+    public GameObject healthOrb;
+    public int numHealthOrbs;
+
     private static GameObject player;
 
     [SerializeField]
@@ -30,6 +33,8 @@ public class Global : MonoBehaviour
     void Update()
     {
         MakeSurePlayerIsNotNull();
+        GetNumOfPickups();
+        SpawnPickup();
         ScoreUpdate();
         EPSUpdate();
         DamageUpdate();
@@ -42,6 +47,7 @@ public class Global : MonoBehaviour
 
     void Init() {
         score = 0;
+        numHealthOrbs = 0;
         incrementedEPS = false;
         energyPerSecond = 1;
         lastTookDamage = lastIncrementedEPS = Time.time;
@@ -56,6 +62,23 @@ public class Global : MonoBehaviour
     void MakeSurePlayerIsNotNull() {
         if (!player) {
             player = GameObject.FindGameObjectWithTag("Player");
+        }
+    }
+
+    void GetNumOfPickups() {
+        numHealthOrbs = GameObject.FindGameObjectsWithTag("Pickup").Length;
+    }
+
+    void SpawnPickup() {
+        int indx = 0;
+        GameObject[] spawners = GameObject.FindGameObjectsWithTag("Spawner");
+        Debug.Log(numHealthOrbs);
+        if (score % 15f == 0 && numHealthOrbs < Mathf.Abs(energyPerSecond) + 5) {
+            indx = Random.Range(0, spawners.Length - 1);
+            if (!spawners[(int)indx].GetComponent<HealthSpawnerScript>().HasPickup()) {
+                Debug.Log("Spawned health");
+                spawners[(int)indx].GetComponent<HealthSpawnerScript>().SpawnPickup();
+            }
         }
     }
 
