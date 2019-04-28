@@ -20,6 +20,7 @@ public class Player : MonoBehaviour {
     public KeyCode downKey;
     public KeyCode leftKey;
     public KeyCode rightKey;
+    public KeyCode interactKey;
 
     // GameObject Components
     private SpriteRenderer sr;
@@ -142,12 +143,24 @@ public class Player : MonoBehaviour {
         lt.range = amount;
     }
 
+
+    // ******************** Collision Functions ************************//
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Pickup")) {
             Heal(20);
             if (currentHealth > maxHealth) {
                 SetHealthToMax();
             }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Shop") && Input.GetKeyDown(interactKey)) {
+            Canvas shopCanvas = GameObject.FindGameObjectWithTag("UI_Shop").GetComponentInChildren<Canvas>(true);
+            ShopBehaviour sb = GameObject.FindGameObjectWithTag("UI_Shop").GetComponentInChildren<ShopBehaviour>(true);
+            shopCanvas.enabled = true;
+            sb.enabled = true;
+            Time.timeScale = 0;
         }
     }
 }
