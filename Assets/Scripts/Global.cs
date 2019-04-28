@@ -10,10 +10,13 @@ public class Global : MonoBehaviour
     [SerializeField]
     private int score;
     [SerializeField]
-    private int lossPerSecond;
+    private int energyPerSecond;
 
+    private bool incrementedEPS;
+    private float lastIncrementedEPS;
     private float lastTookDamage;
     private Text scoreText;
+    private Text epsText;
     private Text healthText;
     private Image healthImage;
     private Sprite[] health_sprites;
@@ -24,43 +27,49 @@ public class Global : MonoBehaviour
         Init();
     }
 
-    // Update is called once per frame
+    // Yes, yes, I should have put all the UI stuff into a UI manager class...
     void Update()
     {
         ScoreUpdate();
-        LPSUpdate();
+        EPSUpdate();
         DamageUpdate();
         ScoreUIUpdate();
+        CheckIfTimeToIncrementEPS();
+        EPSTextUpdate();
         HealthTextUpdate();
         HealthImageUpdate();
     }
 
     void Init() {
         score = 0;
-        lossPerSecond = 1;
-        lastTookDamage = Time.time;
+        incrementedEPS = false;
+        energyPerSecond = 1;
+        lastTookDamage = lastIncrementedEPS = Time.time;
         player = GameObject.FindGameObjectWithTag("Player");
         scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+        epsText = GameObject.Find("EPSText").GetComponent<Text>();
         healthText = GameObject.Find("HealthText").GetComponent<Text>();
         healthImage = GameObject.Find("HealthImage").GetComponent<Image>();
         health_sprites = Resources.LoadAll<Sprite>("health");
     }
 
-    void LPSUpdate() {
-        // This is the main source of difficulty
-        // the higher this is, the faster your life
-        // depletes as you play.
-        // < 30 sec - 1
-        // < 1 min - 2
-        // < 2 min - 4
-        // etc...
-        if (score <= 30) {
-            lossPerSecond = 1;
-        } else if (score <= 60) {
-            lossPerSecond = 2;
-        } else if (score < 120) {
-            lossPerSecond = 4;
-        } // and more...
+    void EPSUpdate() {
+        // TODO: Think of better solution to this
+        //       i.e. how to make hard but still fun
+        //            but still playable?
+        if (score % 15 == 0 && score != 0 && !incrementedEPS && CheckIfTimeToIncrementEPS()) {
+            energyPerSecond++;
+            incrementedEPS = true;
+            lastIncrementedEPS = Time.time;
+        }
+    }
+
+    bool CheckIfTimeToIncrementEPS() {
+        if (Time.time - lastIncrementedEPS >= 1f) {
+            incrementedEPS = false;
+            return true;
+        }
+        return false;
     }
 
     void ScoreUpdate() {
@@ -69,7 +78,7 @@ public class Global : MonoBehaviour
 
     void DamagePlayer() {
         lastTookDamage = Time.time;
-        player.GetComponent<Player>().TakeDamage(lossPerSecond);
+        player.GetComponent<Player>().TakeDamage(energyPerSecond);
     }
 
     bool TimeToDamagePlayer() {
@@ -84,6 +93,10 @@ public class Global : MonoBehaviour
 
     void ScoreUIUpdate() {
         scoreText.text = score.ToString();
+    }
+
+    void EPSTextUpdate() {
+        epsText.text = "-" + energyPerSecond.ToString() + " energy/sec";
     }
 
     void HealthTextUpdate() {

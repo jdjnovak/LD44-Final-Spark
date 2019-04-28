@@ -30,6 +30,8 @@ public class Player : MonoBehaviour {
     // Other Objects
     private Sprite[] player_sprites;
     [SerializeField]
+    private int[] abilities;
+    [SerializeField]
     private int currentSpriteFrame;
     [SerializeField]
     private int currentSpriteAnimation; // Based on player state
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour {
         sr = gameObject.GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         lt = gameObject.GetComponentInChildren<Light>();
+        abilities = new int[4] { 0,0,0,0 };
         player_sprites = Resources.LoadAll<Sprite>("spark");
         currentSpriteAnimation = 0;
         currentSpriteFrame = 0;
@@ -143,6 +146,10 @@ public class Player : MonoBehaviour {
         lt.range = amount;
     }
 
+    public int[] GetPlayerAbilities() {
+        return abilities;
+    }
+
 
     // ******************** Collision Functions ************************//
     private void OnCollisionEnter2D(Collision2D collision) {
@@ -155,7 +162,7 @@ public class Player : MonoBehaviour {
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Shop") && Input.GetKeyDown(interactKey)) {
+        if (collision.gameObject.CompareTag("Shop") && Input.GetKey(interactKey)) {
             Canvas shopCanvas = GameObject.FindGameObjectWithTag("UI_Shop").GetComponentInChildren<Canvas>(true);
             ShopBehaviour sb = GameObject.FindGameObjectWithTag("UI_Shop").GetComponentInChildren<ShopBehaviour>(true);
             shopCanvas.enabled = true;
