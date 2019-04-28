@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour { 
 
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour {
         SpriteUpdate();
         LightRangeUpdate();
         UpdateStatsFromAbilities();
+        GameOver();
     }
 
     void Init() {
@@ -116,6 +118,16 @@ public class Player : MonoBehaviour {
     bool IsInMapBounds() {
         return (transform.position.x >= -7.5f && transform.position.x <= 7.5f &&
                 transform.position.y >= -7.5f && transform.position.y <= 7.5f);
+    }
+
+    bool IsPlayerDead() {
+        return currentHealth <= 0;
+    }
+
+    void GameOver() {
+        if (IsPlayerDead()) {
+            SceneManager.LoadScene(2);
+        }
     }
 
     // *************** Ability Upgrade Functions **************** //
